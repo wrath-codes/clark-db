@@ -1,0 +1,41 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Operator {
+  id   String  @id @default(uuid())
+  name String
+  slug String? @unique
+
+  cnpj    String @unique
+  website String
+
+  @@map("operator")
+}
+
+model Employer {
+  id   String  @id @default(uuid())
+  name String
+  slug String? @unique
+
+  cnpj String @unique
+
+  @@map("employer")
+}
+
+model Broker {
+  id   String  @id @default(uuid())
+  name String
+  slug String? @unique
+
+  cnpj String @unique
+
+  @@map("broker")
+}

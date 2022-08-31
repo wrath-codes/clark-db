@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "baseUrl": ".",
+    "paths": {
+      "@database/*": ["./src/database/*"],
+      "@routes/*": ["./src/routes/*"],
+      "@middlewares/*": ["./src/middlewares/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@operator/*": ["./src/modules/health/operator/useCases/*"],
+      "@user/*": ["./src/modules/user/useCases/*"],
+      "@plan/*": ["./src/modules/health/plan/useCases/*"],
+      "@broker/*": ["./src/modules/broker/useCases/*"],
+      "@employer/*": ["./src/modules/health/employer/useCases/*"],
+      "@contract/*": ["./src/modules/health/contract/useCases/*"],
+    }
+    
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
