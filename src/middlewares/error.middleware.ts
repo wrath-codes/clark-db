@@ -23,7 +23,7 @@ const notFoundHandler = async (
   response: Response,
   next: NextFunction,
 ) => {
-  const error = new Error(`Not Found - ${request.originalUrl}`);
+  const error = new Error(`Não encontrou - ${request.originalUrl}`);
   response.status(404);
   next(error);
 };

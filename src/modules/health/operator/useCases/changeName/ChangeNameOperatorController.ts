@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
 
-import { ChangeNameUseCase } from "./ChangeNameUseCase";
+import { ChangeNameOperatorUseCase } from "./ChangeNameOperatorUseCase";
 
-export class ChangeNameController {
+export class ChangeNameOperatorController {
   async handle(request: Request, response: Response) {
     const { id_operator } = request.params;
     const { name } = request.body;
 
-    const changeNameUseCase = new ChangeNameUseCase();
+    const changeNameOperatorUseCase = new ChangeNameOperatorUseCase();
 
-    const operator = await changeNameUseCase.execute({
+    const operator = await changeNameOperatorUseCase.execute({
       id_operator,
       name,
     });

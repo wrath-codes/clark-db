@@ -19,7 +19,7 @@ export const regexWebsite = async (
     )
   ) {
     response.status(400);
-    throw new Error("Website is not valid!");
+    throw new Error("Website Inválido!");
   }
 
   return next();

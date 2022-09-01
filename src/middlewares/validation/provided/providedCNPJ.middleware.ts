@@ -1,15 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 
-export const providedOperator = async (
+export const providedCNPJ = async (
   request: Request,
   response: Response,
   next: NextFunction,
 ) => {
-  const { website, cnpj } = request.body;
-  // checks if a website was provided
-  if (!website) {
-    throw new Error("Website não provido!");
-  }
+  const { cnpj } = request.body;
   // checks if a cnpj was provided
   if (!cnpj) {
     response.status(400);

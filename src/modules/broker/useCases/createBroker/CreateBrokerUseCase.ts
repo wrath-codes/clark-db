@@ -2,25 +2,23 @@ import { prisma } from "@database/prismaClient";
 
 import { slugifyName } from "@utils/format/slugifyName.util";
 
-interface ICreateOperator {
+interface ICreateBroker {
   name: string;
   cnpj: string;
-  website: string;
 }
 
-export class CreateOperatorUseCase {
-  async execute({ name, cnpj, website }: ICreateOperator) {
+export class CreateBrokerUseCase {
+  async execute({ name, cnpj }: ICreateBroker) {
     const slug = await slugifyName(name);
 
-    const operator = await prisma.operator.create({
+    const broker = await prisma.broker.create({
       data: {
         name,
-        cnpj,
-        website,
         slug,
+        cnpj,
       },
     });
 
-    return operator;
+    return broker;
   }
 }

@@ -1,10 +1,12 @@
 import { Router } from "express";
 
-import { operatorRoutes } from "./operator.routes";
+import { brokerRoutes } from "./broker.routes";
+import { healthRoutes } from "./health/index.routes";
 
 const routes = Router();
 
 // routes
-routes.use("/api/operator", operatorRoutes);
+routes.use("/health", healthRoutes);
+routes.use("/broker", brokerRoutes);
 
 export { routes };

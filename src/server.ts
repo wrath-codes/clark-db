@@ -1,20 +1,23 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { config } from "dotenv";
-import express from "express";
 
-import { errorHandler, notFoundHandler } from "@middlewares/error.middleware";
-
-import { routes } from "@routes/index.routes";
+import { createApp } from "@utils/createApp.utils";
 
 config();
-const app = express();
+const PORT = process.env.PORT || 3001;
 
-app.use(express.json());
-app.use(routes);
+async function main() {
+  console.log("Iniciando o servidor da Clark Seguros...");
+  console.log(`Servidor rodando no mode: ${process.env.ENVIROMENT} mode`);
 
-app.use(errorHandler);
-app.use(notFoundHandler);
+  try {
+    const app = createApp();
+    app.listen(PORT, () => {
+      console.log(`Servidor da Clark Seguros rodando na porta ${PORT}`);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
-app.listen(process.env.PORT, () => {
-  console.log(`Servidor da Clark Seguros rodando na ${process.env.PORT}`);
-});
+void main();

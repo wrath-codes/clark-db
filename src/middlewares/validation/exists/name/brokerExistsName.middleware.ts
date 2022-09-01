@@ -1,20 +1,20 @@
 import { prisma } from "@database/prismaClient";
 import { NextFunction, Request, Response } from "express";
 
-export const operatorExistsName = async (
+export const brokerExistsName = async (
   request: Request,
   response: Response,
   next: NextFunction,
 ) => {
   const { name } = request.body;
 
-  // check if operator with same name already exists
-  const operatorExists = await prisma.operator.findFirst({
+  // check if broker with same name already exists
+  const brokerExists = await prisma.broker.findFirst({
     where: { name },
   });
-  if (operatorExists) {
+  if (brokerExists) {
     response.status(400);
-    throw new Error("Uma Operadora com este nome já existe!");
+    throw new Error("Uma Corretora com este nome já existe!");
   }
 
   return next();

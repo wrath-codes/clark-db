@@ -10,12 +10,13 @@ datasource db {
 }
 
 model Operator {
-  id   String  @id @default(uuid())
-  name String
-  slug String? @unique
-
-  cnpj    String @unique
+  id      String  @id @default(uuid())
+  name    String
+  slug    String? @unique
+  cnpj    String  @unique
   website String
+
+  plans Plan[]
 
   @@map("operator")
 }
@@ -24,8 +25,10 @@ model Employer {
   id   String  @id @default(uuid())
   name String
   slug String? @unique
+  cnpj String  @unique
 
-  cnpj String @unique
+  broker   Broker? @relation(fields: [brokerId], references: [id])
+  brokerId String?
 
   @@map("employer")
 }
@@ -34,8 +37,36 @@ model Broker {
   id   String  @id @default(uuid())
   name String
   slug String? @unique
+  cnpj String  @unique
 
-  cnpj String @unique
+  employers Employer[]
 
   @@map("broker")
+}
+
+model Plan {
+  id          String  @id @default(uuid())
+  name        String
+  slug        String? @unique
+  reach       Reach   @default(GRUPO_ESTADOS)
+  ansRegister String  @unique
+
+  obstetric  Boolean @default(false)
+  outpatient Boolean @default(false)
+  hospital   Boolean @default(false)
+
+  operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+  operatorId String
+
+  @@map("plan")
+}
+
+enum Reach {
+  MUNICIPIO
+  ESTADO
+  NACIONAL
+  GRUPO_MUNICIPIOS
+  GRUPO_ESTADOS
+
+  @@map("reach")
 }

@@ -14,7 +14,7 @@ export const operatorExistsId = async (
   });
   if (!operatorExists) {
     response.status(404);
-    throw new Error("Operadora não existe!");
+    throw new Error("Operadora não existe com este ID!");
   }
 
   return next();

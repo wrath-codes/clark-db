@@ -1,20 +1,20 @@
 import { prisma } from "@database/prismaClient";
 import { NextFunction, Request, Response } from "express";
 
-export const operatorExistsCNPJ = async (
+export const employerExistsCNPJ = async (
   request: Request,
   response: Response,
   next: NextFunction,
 ) => {
   const { cnpj } = request.body;
 
-  // check if operator with same cnpj already exists
-  const operatorExists = await prisma.operator.findFirst({
+  // check if employer with same cnpj already exists
+  const employerExists = await prisma.employer.findFirst({
     where: { cnpj },
   });
-  if (operatorExists) {
+  if (employerExists) {
     response.status(400);
-    throw new Error("Uma Operadora com este CNPJ já existe!");
+    throw new Error("Um Cliente com este CNPJ já existe!");
   }
 
   return next();
