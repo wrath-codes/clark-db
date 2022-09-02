@@ -18,6 +18,8 @@ model Operator {
 
   plans Plan[]
 
+  address Address?
+
   @@map("operator")
 }
 
@@ -30,6 +32,8 @@ model Employer {
   broker   Broker? @relation(fields: [brokerId], references: [id])
   brokerId String?
 
+  address Address?
+
   @@map("employer")
 }
 
@@ -41,7 +45,34 @@ model Broker {
 
   employers Employer[]
 
+  address Address?
+
   @@map("broker")
+}
+
+model Address {
+  id         String  @id @default(uuid())
+  street     String
+  number     Int
+  complement String?
+  district   String
+  city       String
+  state      String
+  zipCode    String
+  country    String  @default("Brasil")
+  latitude   Float?
+  longitude  Float?
+
+  operatorId String?   @unique
+  operator   Operator? @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  employerId String?   @unique
+  employer   Employer? @relation(fields: [employerId], references: [id], onDelete: Cascade)
+
+  brokerId String? @unique
+  broker   Broker? @relation(fields: [brokerId], references: [id], onDelete: Cascade)
+
+  @@map("address")
 }
 
 model Plan {
@@ -56,7 +87,7 @@ model Plan {
   hospital   Boolean @default(false)
 
   operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-  operatorId String
+  operatorId String   @unique
 
   @@map("plan")
 }
