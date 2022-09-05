@@ -12,7 +12,7 @@ interface ICnpjInfoPayload {
       street: string;
       number: number;
       complement?: string;
-      neighborhood: string;
+      district: string;
       city: string;
       state: string;
       zipCode: string;
@@ -55,7 +55,7 @@ export const getCnpjJaInfo = async (
                 street: data.address.street,
                 number: Number(data.address.number),
                 complement: data.address.details,
-                neighborhood: data.address.district,
+                district: data.address.district,
                 city: data.address.city,
                 state: data.address.state,
                 zipCode: await formatCEP(data.address.zip),

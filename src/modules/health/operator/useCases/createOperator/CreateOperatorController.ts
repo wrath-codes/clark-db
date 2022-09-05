@@ -5,7 +5,7 @@ import { CreateOperatorUseCase } from "./CreateOperatorUseCase";
 export class CreateOperatorController {
   async handle(request: Request, response: Response) {
     const { cnpj, website } = request.body;
-    const { name } = request.cnpj_info;
+    const { name, address } = request.cnpj_info;
 
     const createOperatorUseCase = new CreateOperatorUseCase();
 
@@ -13,9 +13,15 @@ export class CreateOperatorController {
       name,
       cnpj,
       website,
+      street: address.street,
+      number: Number(address.number),
+      complement: String(address.complement),
+      district: address.district,
+      city: address.city,
+      state: address.state,
+      zipCode: address.zipCode,
     });
 
-    console.log(request.cnpj_info);
     return response.status(201).json(operator);
   }
 }

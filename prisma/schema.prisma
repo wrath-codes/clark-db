@@ -19,6 +19,8 @@ model Operator {
   plans Plan[]
 
   address Address?
+  login   Login?
+  contact Contact?
 
   @@map("operator")
 }
@@ -33,6 +35,7 @@ model Employer {
   brokerId String?
 
   address Address?
+  contact Contact?
 
   @@map("employer")
 }
@@ -75,6 +78,22 @@ model Address {
   @@map("address")
 }
 
+model Contact {
+  id        String @id @default(uuid())
+  firstName String
+  lastName  String
+  email     String @unique
+  phone     String
+
+  operatorId String?   @unique
+  operator   Operator? @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  employerId String?   @unique
+  employer   Employer? @relation(fields: [employerId], references: [id], onDelete: Cascade)
+
+  @@map("contact")
+}
+
 model Plan {
   id          String  @id @default(uuid())
   name        String
@@ -90,6 +109,17 @@ model Plan {
   operatorId String   @unique
 
   @@map("plan")
+}
+
+model Login {
+  id       String @id @default(uuid())
+  username String
+  password String
+
+  operatorId String?   @unique
+  operator   Operator? @relation(fields: [operatorId], references: [id], onDelete: Cascade)
+
+  @@map("login")
 }
 
 enum Reach {

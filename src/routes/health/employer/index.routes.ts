@@ -5,17 +5,26 @@ import { Router } from "express";
 import { getCnpjJaInfo } from "@middlewares/externalAPI/CnpjJa/getCnpjJaInfo.middleware";
 import { getCnpjJaToken } from "@middlewares/externalAPI/CnpjJa/getCnpjJaToken.middleware";
 import { employerExistsCNPJ } from "@middlewares/validation/exists/cnpj/employerExistsCNPJ.middleware";
+import { contactExistsEmployer } from "@middlewares/validation/exists/employer/contactExistsEmployer.middleware";
+import { contactExistsNoEmployer } from "@middlewares/validation/exists/employer/contactExistsNoEmployer.middleware";
 import { brokerExistsId } from "@middlewares/validation/exists/id/brokerExistsId.middleware";
 import { employerExistsId } from "@middlewares/validation/exists/id/employerExistsId.middleware";
 import { employerExistsName } from "@middlewares/validation/exists/name/employerExistsName.middleware";
 import { providedCNPJ } from "@middlewares/validation/provided/providedCNPJ.middleware";
+import { providedContact } from "@middlewares/validation/provided/providedContact.middleware";
 import { regexCNPJ } from "@middlewares/validation/regex/regexCNPJ.middleware";
+import { regexEmail } from "@middlewares/validation/regex/regexEmail.middleware";
+import { regexPhone } from "@middlewares/validation/regex/regexPhone.middleware";
 
 // controllers imported:
+
+import { AddContactEmployerController } from "@employer/addContact/AddContactEmployerController";
 import { AssignBrokerController } from "@employer/assignBroker/AssignBrokerController";
 import { ChangeNameEmployerController } from "@employer/changeName/ChangeNameEmployerController";
 import { CreateEmployerController } from "@employer/createEmployer/CreateEmployerController";
+import { DeleteContactEmployerController } from "@employer/deleteContact/DeleteContactEmployerController";
 import { DeleteEmployerController } from "@employer/deleteEmployer/DeleteEmployerController";
+import { EditContactEmployerController } from "@employer/editContact/EditContactEmployerUseCase";
 import { FindAllEmployersController } from "@employer/findAll/FindAllEmployersController";
 import { FindEmployerController } from "@employer/findEmployer/FindEmployerController";
 
@@ -29,6 +38,9 @@ const findEmployerController = new FindEmployerController();
 const findAllEmployersController = new FindAllEmployersController();
 const deleteEmployerController = new DeleteEmployerController();
 const assignBrokerController = new AssignBrokerController();
+const addContactEmployerController = new AddContactEmployerController();
+const editContactEmployerController = new EditContactEmployerController();
+const deleteContactEmployerController = new DeleteContactEmployerController();
 
 // routes definitions:
 
@@ -104,6 +116,50 @@ employerRoutes.put(
   employerExistsId,
   brokerExistsId,
   assignBrokerController.handle,
+);
+
+/**
+ * @route POST /employer/addContact/{id_employer}
+ * @description Add a contact to an employer
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.post(
+  "/addContact/:id_employer",
+  employerExistsId,
+  providedContact,
+  regexEmail,
+  regexPhone,
+  contactExistsEmployer,
+  addContactEmployerController.handle,
+);
+
+/**
+ * @route PUT /employer/editContact/{id_employer}
+ * @description Edit a contact of an employer
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.put(
+  "/editContact/:id_employer",
+  regexEmail,
+  regexPhone,
+  employerExistsId,
+  contactExistsNoEmployer,
+  editContactEmployerController.handle,
+);
+
+/**
+ * @route DELETE /employer/deleteContact/{id_employer}
+ * @description Delete a contact of an employer
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.delete(
+  "/deleteContact/:id_employer",
+  employerExistsId,
+  contactExistsNoEmployer,
+  deleteContactEmployerController.handle,
 );
 
 // export module:

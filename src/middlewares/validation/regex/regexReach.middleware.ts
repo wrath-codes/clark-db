@@ -20,6 +20,6 @@ export const regexReach = async (
   }
   response.status(400);
   throw new Error(
-    "Reach needs to be MUNICIPIO or GRUPO_MUNICIPIOS or ESTADO or GRUPO_ESTADOS or NACIONAL",
+    "Abrangência precisa ser MUNICIPIO ou GRUPO_MUNICIPIOS ou ESTADO ou GRUPO_ESTADOS ou NACIONAL",
   );
 };

@@ -1,20 +1,20 @@
 import { prisma } from "@database/prismaClient";
 import { NextFunction, Request, Response } from "express";
 
-export const planExistsAnsRegister = async (
+export const planExistsName = async (
   request: Request,
   response: Response,
   next: NextFunction,
 ) => {
-  const { ansRegister } = request.body;
+  const { name } = request.body;
 
-  // check if plan with same ans_register already exists
+  // check if plan with same name already exists
   const planExists = await prisma.plan.findFirst({
-    where: { ansRegister },
+    where: { name },
   });
   if (planExists) {
     response.status(400);
-    throw new Error("Um Plano com este Registro ANS já existe!");
+    throw new Error("Um Plano com este Nome já existe!");
   }
 
   return next();

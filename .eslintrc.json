@@ -83,6 +83,7 @@
               "/^@operator/",
               "/^@employer/",
               "/^@broker/",
+              "/^@plan/",
               ["parent", "sibling", "index"]
             ],
           "alphabetize": { "order": "asc", "ignoreCase": true }

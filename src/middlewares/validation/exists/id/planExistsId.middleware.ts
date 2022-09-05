@@ -21,7 +21,7 @@ export const planExistsId = async (
   });
   if (!planExists) {
     response.status(404);
-    throw new Error("Plan não existe com este ID!");
+    throw new Error("Plano não existe com este ID!");
   }
 
   return next();

@@ -15,7 +15,7 @@ declare namespace Express {
         street: string;
         number: number;
         complement?: string;
-        neighborhood: string;
+        district: string;
         city: string;
         state: string;
         zipCode: string;

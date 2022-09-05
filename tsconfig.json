@@ -25,7 +25,6 @@
       "@employer/*": ["./src/modules/health/employer/useCases/*"],
       "@contract/*": ["./src/modules/health/contract/useCases/*"],
     }
-    
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]

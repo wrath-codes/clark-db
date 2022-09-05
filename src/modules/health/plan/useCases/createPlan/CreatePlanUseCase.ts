@@ -1,11 +1,13 @@
 import { prisma } from "@database/prismaClient";
 import { Reach } from "@prisma/client";
 
+import { slugifyName } from "@utils/format/slugifyName.util";
+
 interface ICreatePlan {
   id_operator: string;
   name: string;
   reach: Reach;
-  ans_register: string;
+  ansRegister: string;
   obstetric?: boolean;
   outpatient?: boolean;
   hospital?: boolean;
@@ -16,7 +18,7 @@ export class CreatePlanUseCase {
     id_operator,
     name,
     reach,
-    ans_register,
+    ansRegister,
     obstetric,
     outpatient,
     hospital,
@@ -26,7 +28,8 @@ export class CreatePlanUseCase {
         operatorId: id_operator,
         name,
         reach,
-        ansRegister: ans_register,
+        slug: await slugifyName(name),
+        ansRegister,
         obstetric: obstetric || false,
         outpatient: outpatient || false,
         hospital: hospital || false,
