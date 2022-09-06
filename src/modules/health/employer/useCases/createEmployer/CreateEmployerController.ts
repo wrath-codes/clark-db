@@ -6,6 +6,7 @@ export class CreateEmployerController {
   async handle(request: Request, response: Response) {
     const { cnpj } = request.body;
     const { name, address } = request.cnpj_info;
+    const { latitude, longitude } = request;
 
     const createEmployerUseCase = new CreateEmployerUseCase();
 
@@ -19,6 +20,8 @@ export class CreateEmployerController {
       city: address.city,
       state: address.state,
       zipCode: address.zipCode,
+      latitude,
+      longitude,
     });
 
     return response.status(201).json(employer);

@@ -2,6 +2,7 @@
 import { Router } from "express";
 
 // middlewares imported:
+import { getLatitudeLongitude } from "@middlewares/externalAPI/cepAberto/getLatitudeLongitude.middleware";
 import { getCnpjJaInfo } from "@middlewares/externalAPI/CnpjJa/getCnpjJaInfo.middleware";
 import { getCnpjJaToken } from "@middlewares/externalAPI/CnpjJa/getCnpjJaToken.middleware";
 import { planExistsAnsRegister } from "@middlewares/validation/exists/ansRegister/planExistsAnsRegister";
@@ -14,7 +15,9 @@ import { contactExistsNoOperator } from "@middlewares/validation/exists/operator
 import { contactExistsOperator } from "@middlewares/validation/exists/operator/contactExistsOperator.middleware";
 import { loginExistsNoOperator } from "@middlewares/validation/exists/operator/loginExistsNoOperator.middleware";
 import { loginExistsOperator } from "@middlewares/validation/exists/operator/loginExistsOperator.middleware";
+import { planExistsAnotherOperator } from "@middlewares/validation/exists/operator/planExistsAnotherOperator.middleware";
 import { operatorExistsWebsite } from "@middlewares/validation/exists/website/operatorExistsWebsite.middleware";
+import { providedCNPJ } from "@middlewares/validation/provided/providedCNPJ.middleware";
 import { providedContact } from "@middlewares/validation/provided/providedContact.middleware";
 import { providedLogin } from "@middlewares/validation/provided/providedLogin.middleware";
 import { providedOperator } from "@middlewares/validation/provided/providedOperator.middleware";
@@ -36,10 +39,13 @@ import { EditContactOperatorController } from "@operator/editContact/EditContact
 import { EditLoginOperatorController } from "@operator/editLogin/EditLoginOperatorController";
 import { FindAllOperatorsController } from "@operator/findAll/FindAllOperatorsController";
 import { FindOperatorController } from "@operator/findOperator/findOperatorController";
+import { GetOperatorOustideController } from "@operator/getOperatorOuside/GetOperatorOutsideController";
 
 import { CreatePlanController } from "@plan/createPlan/CreatePlanController";
 import { DeletePlanController } from "@plan/deletePlan/DeletePlanController";
 import { EditPlanController } from "@plan/editPlan/EditPlanController";
+import { FindPlanController } from "@plan/findPlan/FindPlanController";
+import { FindPlansOperatorController } from "@plan/findPlans/FindPlansOperatorController";
 
 // router definitions:
 const operatorRoutes = Router();
@@ -60,6 +66,9 @@ const deleteContactOperatorController = new DeleteContactOperatorController();
 const createPlanController = new CreatePlanController();
 const editPlanController = new EditPlanController();
 const deletePlanController = new DeletePlanController();
+const getOperatorOustideController = new GetOperatorOustideController();
+const findPlanController = new FindPlanController();
+const findPlansOperatorController = new FindPlansOperatorController();
 
 // routes definitions:
 /**
@@ -76,6 +85,7 @@ operatorRoutes.post(
   operatorExistsCNPJ,
   getCnpjJaToken,
   getCnpjJaInfo,
+  getLatitudeLongitude,
   createOperatorController.handle,
 );
 
@@ -136,6 +146,22 @@ operatorRoutes.delete(
   "/deleteOperator/:id_operator",
   operatorExistsId,
   deleteOperatorController.handle,
+);
+
+/**
+ * @route GET /operator/getOperatorOutside/
+ * @description Get operator outside the database
+ * @access Private
+ * @author Raphael Vaz
+ */
+operatorRoutes.get(
+  "/getOperatorOutside/",
+  providedCNPJ,
+  regexCNPJ,
+  getCnpjJaToken,
+  getCnpjJaInfo,
+  getLatitudeLongitude,
+  getOperatorOustideController.handle,
 );
 
 /**
@@ -246,11 +272,12 @@ operatorRoutes.put(
   "/:id_operator/editPlan/:id_plan",
   operatorExistsId,
   planExistsId,
+  planExistsAnotherOperator,
   editPlanController.handle,
 );
 
 /**
- * @route DELETE /operator/deletePlan/{id_operator}
+ * @route DELETE /operator/:id_operator/deletePlan/:id_plan
  * @description Delete a plan of an operator
  * @access Private
  * @author Raphael Vaz
@@ -259,7 +286,28 @@ operatorRoutes.delete(
   "/:id_operator/deletePlan/:id_plan",
   operatorExistsId,
   planExistsId,
+  planExistsAnotherOperator,
   deletePlanController.handle,
+);
+
+/**
+ * @route GET /operator/:id_operator/findPlan/:id_plan
+ * @description Find a plan of an operator
+ * @access Private
+ * @author Raphael Vaz
+ */
+operatorRoutes.get(
+  "/:id_operator/findPlan/:id_plan",
+  operatorExistsId,
+  planExistsId,
+  planExistsAnotherOperator,
+  findPlanController.handle,
+);
+
+operatorRoutes.get(
+  "/:id_operator/findAllPlans",
+  operatorExistsId,
+  findPlansOperatorController.handle,
 );
 
 // export module:

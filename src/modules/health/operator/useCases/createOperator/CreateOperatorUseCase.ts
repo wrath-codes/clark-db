@@ -13,6 +13,8 @@ interface ICreateOperator {
   city: string;
   state: string;
   zipCode: string;
+  latitude: number;
+  longitude: number;
 }
 
 export class CreateOperatorUseCase {
@@ -27,6 +29,8 @@ export class CreateOperatorUseCase {
     city,
     state,
     zipCode,
+    latitude,
+    longitude,
   }: ICreateOperator) {
     const slug = await slugifyName(name);
 
@@ -45,6 +49,8 @@ export class CreateOperatorUseCase {
             city,
             state,
             zipCode,
+            latitude,
+            longitude,
           },
         },
       },

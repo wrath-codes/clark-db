@@ -2,6 +2,7 @@
 import { Router } from "express";
 
 // middlewares imported:
+import { getLatitudeLongitude } from "@middlewares/externalAPI/cepAberto/getLatitudeLongitude.middleware";
 import { getCnpjJaInfo } from "@middlewares/externalAPI/CnpjJa/getCnpjJaInfo.middleware";
 import { getCnpjJaToken } from "@middlewares/externalAPI/CnpjJa/getCnpjJaToken.middleware";
 import { employerExistsCNPJ } from "@middlewares/validation/exists/cnpj/employerExistsCNPJ.middleware";
@@ -27,6 +28,7 @@ import { DeleteEmployerController } from "@employer/deleteEmployer/DeleteEmploye
 import { EditContactEmployerController } from "@employer/editContact/EditContactEmployerUseCase";
 import { FindAllEmployersController } from "@employer/findAll/FindAllEmployersController";
 import { FindEmployerController } from "@employer/findEmployer/FindEmployerController";
+import { GetEmployerOustideController } from "@employer/getEmployerOutside/GetEmployerOutsideController";
 
 // router definitions:
 const employerRoutes = Router();
@@ -41,6 +43,7 @@ const assignBrokerController = new AssignBrokerController();
 const addContactEmployerController = new AddContactEmployerController();
 const editContactEmployerController = new EditContactEmployerController();
 const deleteContactEmployerController = new DeleteContactEmployerController();
+const getEmployerOustideController = new GetEmployerOustideController();
 
 // routes definitions:
 
@@ -57,6 +60,7 @@ employerRoutes.post(
   employerExistsCNPJ,
   getCnpjJaToken,
   getCnpjJaInfo,
+  getLatitudeLongitude,
   createEmployerController.handle,
 );
 
@@ -160,6 +164,16 @@ employerRoutes.delete(
   employerExistsId,
   contactExistsNoEmployer,
   deleteContactEmployerController.handle,
+);
+
+employerRoutes.get(
+  "/getEmployerOutside/",
+  providedCNPJ,
+  regexCNPJ,
+  getCnpjJaToken,
+  getCnpjJaInfo,
+  getLatitudeLongitude,
+  getEmployerOustideController.handle,
 );
 
 // export module:

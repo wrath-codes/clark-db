@@ -21,5 +21,8 @@ declare namespace Express {
         zipCode: string;
       };
     };
+
+    longitude: number;
+    latitude: number;
   }
 }

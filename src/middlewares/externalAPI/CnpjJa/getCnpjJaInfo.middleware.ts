@@ -41,7 +41,7 @@ export const getCnpjJaInfo = async (
       })
         .then(async (response) => {
           if (response.status === 400) {
-            throw new Error("CNPJ not found");
+            throw new Error("CNPJ não encontrado!");
           } else {
             return await response.json();
           }

@@ -6,6 +6,7 @@ export class CreateOperatorController {
   async handle(request: Request, response: Response) {
     const { cnpj, website } = request.body;
     const { name, address } = request.cnpj_info;
+    const { latitude, longitude } = request;
 
     const createOperatorUseCase = new CreateOperatorUseCase();
 
@@ -20,6 +21,8 @@ export class CreateOperatorController {
       city: address.city,
       state: address.state,
       zipCode: address.zipCode,
+      latitude,
+      longitude,
     });
 
     return response.status(201).json(operator);

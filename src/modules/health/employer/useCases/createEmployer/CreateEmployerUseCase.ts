@@ -12,6 +12,8 @@ interface ICreateEmployer {
   city: string;
   state: string;
   zipCode: string;
+  latitude: number;
+  longitude: number;
 }
 
 export class CreateEmployerUseCase {
@@ -25,6 +27,8 @@ export class CreateEmployerUseCase {
     city,
     state,
     zipCode,
+    latitude,
+    longitude,
   }: ICreateEmployer) {
     const slug = await slugifyName(name);
 
@@ -42,6 +46,8 @@ export class CreateEmployerUseCase {
             city,
             state,
             zipCode,
+            latitude,
+            longitude,
           },
         },
       },

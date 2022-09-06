@@ -1,3 +1,3 @@
-export const formatCEP = async (cep: string) => {
+export const unformatCEP = async (cep: string) => {
   return cep.replace(".", "").replace("-", "");
 };
