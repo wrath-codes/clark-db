@@ -40,6 +40,7 @@
 			    }
 			  }
 			],
+      
       "class-methods-use-this": "off",
 			"import/prefer-default-export": "off",
 			"no-shadow": "off",
@@ -84,6 +85,7 @@
               "/^@employer/",
               "/^@broker/",
               "/^@plan/",
+              "/^@contract/",
               ["parent", "sibling", "index"]
             ],
           "alphabetize": { "order": "asc", "ignoreCase": true }

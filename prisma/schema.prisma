@@ -22,6 +22,8 @@ model Operator {
   login   Login?
   contact Contact?
 
+  contracts Contract[]
+
   @@map("operator")
 }
 
@@ -36,6 +38,8 @@ model Employer {
 
   address Address?
   contact Contact?
+
+  contracts Contract[]
 
   @@map("employer")
 }
@@ -106,7 +110,7 @@ model Plan {
   hospital   Boolean @default(false)
 
   operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
-  operatorId String   @unique
+  operatorId String
 
   @@map("plan")
 }
@@ -130,4 +134,29 @@ enum Reach {
   GRUPO_ESTADOS
 
   @@map("reach")
+}
+
+model Contract {
+  id          String         @id @default(uuid())
+  number      String         @unique
+  startDate   DateTime       @default(now())
+  endDate     DateTime?
+  status      ContractStatus @default(VALIDO)
+  description String?
+
+  employerId String
+  employer   Employer @relation(fields: [employerId], references: [id])
+
+  operatorId String
+  operator   Operator @relation(fields: [operatorId], references: [id])
+
+  @@map("contract")
+}
+
+enum ContractStatus {
+  VALIDO
+  CANCELADO
+  EXPIRADO
+
+  @@map("contract_status")
 }

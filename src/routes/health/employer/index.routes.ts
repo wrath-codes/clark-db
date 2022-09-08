@@ -9,16 +9,22 @@ import { employerExistsCNPJ } from "@middlewares/validation/exists/cnpj/employer
 import { contactExistsEmployer } from "@middlewares/validation/exists/employer/contactExistsEmployer.middleware";
 import { contactExistsNoEmployer } from "@middlewares/validation/exists/employer/contactExistsNoEmployer.middleware";
 import { brokerExistsId } from "@middlewares/validation/exists/id/brokerExistsId.middleware";
+import { contractExistsId } from "@middlewares/validation/exists/id/contractExistsId.middleware";
 import { employerExistsId } from "@middlewares/validation/exists/id/employerExistsId.middleware";
+import { operatorExistsId } from "@middlewares/validation/exists/id/operatorExistsId.middleware";
 import { employerExistsName } from "@middlewares/validation/exists/name/employerExistsName.middleware";
+import { contractExistsNumber } from "@middlewares/validation/exists/number/contractExistsNumber.middleware";
 import { providedCNPJ } from "@middlewares/validation/provided/providedCNPJ.middleware";
 import { providedContact } from "@middlewares/validation/provided/providedContact.middleware";
+import { providedContract } from "@middlewares/validation/provided/providedContract.middleware";
 import { regexCNPJ } from "@middlewares/validation/regex/regexCNPJ.middleware";
 import { regexEmail } from "@middlewares/validation/regex/regexEmail.middleware";
 import { regexPhone } from "@middlewares/validation/regex/regexPhone.middleware";
+import { validContractDate } from "@middlewares/validation/valid/contract/validContractDate.middleware";
+import { validContractStatusNotCancelado } from "@middlewares/validation/valid/contract/validContractStatusNotCancelado.middleware";
+import { validContractStatusValido } from "@middlewares/validation/valid/contract/validContractStatusValido.middleware";
 
 // controllers imported:
-
 import { AddContactEmployerController } from "@employer/addContact/AddContactEmployerController";
 import { AssignBrokerController } from "@employer/assignBroker/AssignBrokerController";
 import { ChangeNameEmployerController } from "@employer/changeName/ChangeNameEmployerController";
@@ -29,6 +35,13 @@ import { EditContactEmployerController } from "@employer/editContact/EditContact
 import { FindAllEmployersController } from "@employer/findAll/FindAllEmployersController";
 import { FindEmployerController } from "@employer/findEmployer/FindEmployerController";
 import { GetEmployerOustideController } from "@employer/getEmployerOutside/GetEmployerOutsideController";
+
+import { CancelContractController } from "@contract/cancelContract/CancelContractController";
+import { CreateContractController } from "@contract/createContract/CreateContractController";
+import { EndContractController } from "@contract/endContract/EndContractController";
+import { FindAllContractsEmployerController } from "@contract/findAll/FindAllContractsEmployerController";
+import { FindInvalidContractsEmployerController } from "@contract/findInvalid/FindInvalidContractsEmployerController";
+import { FindValidContractEmployerController } from "@contract/findValid/FindValidContractsEmployerController";
 
 // router definitions:
 const employerRoutes = Router();
@@ -44,9 +57,17 @@ const addContactEmployerController = new AddContactEmployerController();
 const editContactEmployerController = new EditContactEmployerController();
 const deleteContactEmployerController = new DeleteContactEmployerController();
 const getEmployerOustideController = new GetEmployerOustideController();
+const createContractController = new CreateContractController();
+const cancelContractController = new CancelContractController();
+const endContractController = new EndContractController();
+const findAllContractsEmployerController =
+  new FindAllContractsEmployerController();
+const findValidContractsEmployerController =
+  new FindValidContractEmployerController();
+const findInvalidContractsEmployerController =
+  new FindInvalidContractsEmployerController();
 
 // routes definitions:
-
 /**
  * @route POST /employer/createEmployer
  * @description Create an employer
@@ -166,6 +187,12 @@ employerRoutes.delete(
   deleteContactEmployerController.handle,
 );
 
+/**
+ * @route GET /employer/getEmployerOutside/
+ * @description Get employers outside the system
+ * @access Private
+ * @author Raphael Vaz
+ */
 employerRoutes.get(
   "/getEmployerOutside/",
   providedCNPJ,
@@ -174,6 +201,85 @@ employerRoutes.get(
   getCnpjJaInfo,
   getLatitudeLongitude,
   getEmployerOustideController.handle,
+);
+
+/**
+ * @route POST /employer/createContract/{id_employer}/{id_operator}
+ * @description Create a contract
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.post(
+  "/createContract/:id_employer/:id_operator",
+  providedContract,
+  validContractDate,
+  employerExistsId,
+  operatorExistsId,
+  contractExistsNumber,
+  createContractController.handle,
+);
+
+/**
+ * @route PATCH /employer/cancelContract/{id_contract}
+ * @description Cancel a contract
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.patch(
+  "/cancelContract/:id_contract",
+  contractExistsId,
+  validContractStatusValido,
+  cancelContractController.handle,
+);
+
+/**
+ * @route PATCH /employer/endContract/{id_contract}
+ * @description End a contract
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.patch(
+  "/endContract/:id_contract",
+  contractExistsId,
+  validContractStatusValido,
+  validContractStatusNotCancelado,
+  endContractController.handle,
+);
+
+/**
+ * @route GET /employer/findAllContracts/{id_employer}
+ * @description Find all contracts of an employer
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.get(
+  "/findAllContracts/:id_employer",
+  employerExistsId,
+  findAllContractsEmployerController.handle,
+);
+
+/**
+ * @route GET /employer/findValidContracts/{id_employer}
+ * @description Find all valid contracts of an employer
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.get(
+  "/findValidContracts/:id_employer",
+  employerExistsId,
+  findValidContractsEmployerController.handle,
+);
+
+/**
+ * @route GET /employer/findInvalidContracts/{id_employer}
+ * @description Find all invalid contracts of an employer
+ * @access Private
+ * @author Raphael Vaz
+ */
+employerRoutes.get(
+  "/findInvalidContracts/:id_employer",
+  employerExistsId,
+  findInvalidContractsEmployerController.handle,
 );
 
 // export module:

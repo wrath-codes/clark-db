@@ -24,6 +24,7 @@ import { providedOperator } from "@middlewares/validation/provided/providedOpera
 import { regexCNPJ } from "@middlewares/validation/regex/regexCNPJ.middleware";
 import { regexEmail } from "@middlewares/validation/regex/regexEmail.middleware";
 import { regexPhone } from "@middlewares/validation/regex/regexPhone.middleware";
+import { regexReach } from "@middlewares/validation/regex/regexReach.middleware";
 import { regexWebsite } from "@middlewares/validation/regex/regexWebsite.middleware";
 
 // controllers imported:
@@ -256,6 +257,7 @@ operatorRoutes.delete(
  */
 operatorRoutes.post(
   "/:id_operator/createPlan",
+  regexReach,
   operatorExistsId,
   planExistsAnsRegister,
   planExistsName,

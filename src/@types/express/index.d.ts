@@ -21,7 +21,14 @@ declare namespace Express {
         zipCode: string;
       };
     };
-
+    benificiary_address: {
+      street: string;
+      complement?: string;
+      district: string;
+      city: string;
+      state: string;
+      zipCode: string;
+    };
     longitude: number;
     latitude: number;
   }
