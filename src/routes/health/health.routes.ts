@@ -1,7 +1,7 @@
 import { Router } from "express";
 
-import { employerRoutes } from "./employer/index.routes";
-import { operatorRoutes } from "./operator/index.routes";
+import { employerRoutes } from "./employer/employer.routes";
+import { operatorRoutes } from "./operator/operator.routes";
 
 const healthRoutes = Router();
 

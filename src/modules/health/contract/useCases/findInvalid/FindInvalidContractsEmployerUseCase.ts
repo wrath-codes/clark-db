@@ -5,7 +5,7 @@ export class FindInvalidContractsEmployerUseCase {
     const contracts = await prisma.contract.findMany({
       where: {
         employerId: id_employer,
-        status: { not: "CANCELADO" || "EXPIRADO" },
+        status: { not: "VALIDO" },
       },
       include: { operator: true },
     });

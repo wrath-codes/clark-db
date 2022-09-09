@@ -24,6 +24,7 @@
       "@broker/*": ["./src/modules/broker/useCases/*"],
       "@employer/*": ["./src/modules/health/employer/useCases/*"],
       "@contract/*": ["./src/modules/health/contract/useCases/*"],
+      "@agreement/*": ["./src/modules/health/contract/agreement/useCases/*"],
     }
   },
   "include": ["src/**/*"],

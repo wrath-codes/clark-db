@@ -11,9 +11,7 @@ export const validContractDate = async (
   if (startDate && endDate) {
     if (startDate > endDate) {
       response.status(400);
-      throw new Error(
-        "A data de início não pode ser posterior à data de término!",
-      );
+      throw new Error("A data de início não pode ser posterior à data de término!");
     }
   }
 

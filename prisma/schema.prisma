@@ -112,6 +112,8 @@ model Plan {
   operator   Operator @relation(fields: [operatorId], references: [id], onDelete: Cascade)
   operatorId String
 
+  agreements Agreement[]
+
   @@map("plan")
 }
 
@@ -150,6 +152,8 @@ model Contract {
   operatorId String
   operator   Operator @relation(fields: [operatorId], references: [id])
 
+  agreements Agreement[]
+
   @@map("contract")
 }
 
@@ -159,4 +163,63 @@ enum ContractStatus {
   EXPIRADO
 
   @@map("contract_status")
+}
+
+model Agreement {
+  id          String  @id @default(uuid())
+  description String?
+
+  contract Contract? @relation(fields: [contractId], references: [id])
+  plan     Plan?     @relation(fields: [planId], references: [id])
+
+  contractId String?
+  planId     String?
+
+  coPayment       CoPayment?
+  valuesAgreement ValuesAgreement?
+  valueAgreement  ValueAgreement?
+}
+
+model CoPayment {
+  id          String  @id @default(uuid())
+  description String?
+
+  percentage        Float?
+  examValue         Float?
+  consultationValue Float?
+  admissionValue    Float?
+
+  agreementId String    @unique
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+
+  @@map("coPayment")
+}
+
+model ValuesAgreement {
+  id           String @id @default(uuid())
+  age_0_18     Float
+  age_19_23    Float
+  age_24_28    Float
+  age_29_33    Float
+  age_34_38    Float
+  age_39_43    Float
+  age_44_48    Float
+  age_49_53    Float
+  age_54_58    Float
+  age_59_above Float
+
+  agreementId String    @unique
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+
+  @@map("valuesAgreement")
+}
+
+model ValueAgreement {
+  id    String @id @default(uuid())
+  value Float
+
+  agreementId String    @unique
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+
+  @@map("valueAgreement")
 }

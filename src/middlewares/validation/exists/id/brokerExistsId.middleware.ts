@@ -1,11 +1,7 @@
 import { prisma } from "@database/prismaClient";
 import { NextFunction, Request, Response } from "express";
 
-export const brokerExistsId = async (
-  request: Request,
-  response: Response,
-  next: NextFunction,
-) => {
+export const brokerExistsId = async (request: Request, response: Response, next: NextFunction) => {
   const { id_broker } = request.params;
 
   // check if broker with same id already exists
