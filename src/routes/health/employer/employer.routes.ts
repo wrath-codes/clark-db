@@ -23,6 +23,7 @@ import { FindEmployerController } from "@employer/findEmployer/FindEmployerContr
 import { GetEmployerOustideController } from "@employer/getEmployerOutside/GetEmployerOutsideController";
 
 // route imports:
+import { beneficiaryRoutes } from "./beneficiary/beneficiary.routes";
 import { contactRoutes } from "./contact.routes";
 import { contractRoutes } from "./contract/contract.routes";
 
@@ -30,6 +31,7 @@ import { contractRoutes } from "./contract/contract.routes";
 const employerRoutes = Router();
 employerRoutes.use("/:id_employer/contract", employerExistsId, contractRoutes);
 employerRoutes.use("/:id_employer/contact", employerExistsId, contactRoutes);
+employerRoutes.use("/:id_employer/beneficiary", employerExistsId, beneficiaryRoutes);
 
 // controller registration:
 const createEmployerController = new CreateEmployerController();

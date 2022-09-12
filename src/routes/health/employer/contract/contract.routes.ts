@@ -19,8 +19,10 @@ import { FindContractController } from "@contract/findContract/FindContractContr
 import { FindInvalidContractsEmployerController } from "@contract/findInvalid/FindInvalidContractsEmployerController";
 import { FindValidContractEmployerController } from "@contract/findValid/FindValidContractsEmployerController";
 
+import { FindAgreementsContractController } from "@agreement/findAgreements/FindAgreementsContractController";
+
 // route imports:
-import { agreementRoutes } from "./agreement.routes";
+import { agreementRoutes } from "./agreement/agreement.routes";
 
 // controller registration:
 const createContractController = new CreateContractController();
@@ -30,6 +32,7 @@ const findAllContractsEmployerController = new FindAllContractsEmployerControlle
 const findValidContractsEmployerController = new FindValidContractEmployerController();
 const findInvalidContractsEmployerController = new FindInvalidContractsEmployerController();
 const findContractController = new FindContractController();
+const findAgreementsContractController = new FindAgreementsContractController();
 
 // route definitions:
 const contractRoutes = Router({ mergeParams: true });
@@ -109,5 +112,11 @@ contractRoutes.get("/findInvalidContracts", findInvalidContractsEmployerControll
  * @author Raphael Vaz
  */
 contractRoutes.get("/:id_contract/findContract", contractExistsId, findContractController.handle);
+
+contractRoutes.get(
+  "/:id_contract/findAgreements",
+  contractExistsId,
+  findAgreementsContractController.handle,
+);
 
 export { contractRoutes };
