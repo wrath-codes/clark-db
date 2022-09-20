@@ -87,6 +87,7 @@
               "/^@plan/",
               "/^@contract/",
               "/^@agreement/",
+              "/^@beneficiary/",
               ["parent", "sibling", "index"]
             ],
           "alphabetize": { "order": "asc", "ignoreCase": true }

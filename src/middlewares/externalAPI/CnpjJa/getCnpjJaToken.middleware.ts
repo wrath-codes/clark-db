@@ -7,11 +7,7 @@ interface ICnpjJaPayload {
   ttl: number;
 }
 
-export const getCnpjJaToken = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
+export const getCnpjJaToken = async (req: Request, res: Response, next: NextFunction) => {
   const result = async (): Promise<ICnpjJaPayload> => {
     return await fetch(`${process.env.CNPJJA_URL}/auth`, {
       method: "POST",

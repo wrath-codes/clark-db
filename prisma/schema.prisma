@@ -39,7 +39,10 @@ model Employer {
   address Address?
   contact Contact?
 
-  contracts Contract[]
+  contracts     Contract[]
+  beneficiaries Beneficiary[]
+
+  EmploymentHistory EmploymentHistory[]
 
   @@map("employer")
 }
@@ -78,6 +81,8 @@ model Address {
 
   brokerId String? @unique
   broker   Broker? @relation(fields: [brokerId], references: [id], onDelete: Cascade)
+
+  beneficiaries Beneficiary[]
 
   @@map("address")
 }
@@ -178,6 +183,12 @@ model Agreement {
   coPayment       CoPayment?
   valuesAgreement ValuesAgreement?
   valueAgreement  ValueAgreement?
+
+  beneficiaries Beneficiary[]
+
+  agreementHistory AgreementHistory[]
+
+  @@map("agreement")
 }
 
 model CoPayment {
@@ -222,4 +233,117 @@ model ValueAgreement {
   agreement   Agreement @relation(fields: [agreementId], references: [id])
 
   @@map("valueAgreement")
+}
+
+model Beneficiary {
+  id            String        @id @default(uuid())
+  firstName     String
+  lastName      String
+  cpf           String        @unique
+  email         String?
+  phone         String?
+  dateOfBirth   DateTime
+  sex           Sex           @default(MASCULINO)
+  maritalStatus MaritalStatus @default(SOLTEIRO)
+
+  address   Address? @relation(fields: [addressId], references: [id])
+  addressId String?
+
+  employerId String?
+  employer   Employer? @relation(fields: [employerId], references: [id])
+
+  planCard PlanCard?
+
+  titular   Titular? @relation(fields: [titularId], references: [id])
+  titularId String?
+
+  agreement   Agreement? @relation(fields: [agreementId], references: [id])
+  agreementId String?
+
+  history History?
+
+  @@map("beneficiary")
+}
+
+enum Sex {
+  MASCULINO
+  FEMININO
+}
+
+enum MaritalStatus {
+  SOLTEIRO
+  CASADO
+  DIVORCIADO
+  VIUVO
+}
+
+model PlanCard {
+  id     String       @id @default(uuid())
+  number String       @unique
+  kind   PlanCardKind @default(TITULAR)
+
+  beneficiaryId String      @unique
+  beneficiary   Beneficiary @relation(fields: [beneficiaryId], references: [id], onDelete: Cascade)
+
+  @@map("planCard")
+}
+
+enum PlanCardKind {
+  TITULAR
+  CONJUGUE
+  FILHO_FILHA
+  MAE_PAI
+}
+
+model Titular {
+  id  String @id @default(uuid())
+  cpf String @unique
+
+  family Beneficiary[]
+
+  @@map("titular")
+}
+
+model History {
+  id String @id @default(uuid())
+
+  beneficiaryId String      @unique
+  beneficiary   Beneficiary @relation(fields: [beneficiaryId], references: [id], onDelete: Cascade)
+
+  employmentHistory EmploymentHistory[]
+  agreementHistory  AgreementHistory[]
+
+  @@map("history")
+}
+
+model EmploymentHistory {
+  id          String    @id @default(uuid())
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  isCurrent   Boolean   @default(false)
+
+  historyId String
+  history   History? @relation(fields: [historyId], references: [id], onDelete: Cascade)
+
+  employerId String?
+  Employer   Employer? @relation(fields: [employerId], references: [id])
+
+  @@map("employmentHistory")
+}
+
+model AgreementHistory {
+  id          String    @id @default(uuid())
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  isCurrent   Boolean   @default(false)
+
+  historyId String
+  history   History? @relation(fields: [historyId], references: [id], onDelete: Cascade)
+
+  agreementId String?
+  agreement   Agreement? @relation(fields: [agreementId], references: [id])
+
+  @@map("agreementHistory")
 }
